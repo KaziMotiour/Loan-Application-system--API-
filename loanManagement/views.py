@@ -28,10 +28,11 @@ class ApplicationSerializerView(ListAPIView):
     serializer_class = ApplicationSerializer
     def get_queryset(self):
         user = self.request.user
-        group_name = user.groups.all()[0].name
+        if not user.is_superuser:
+            group_name = user.groups.all()[0].name
 
         if user.is_superuser:
-            return Application.objects.all(paymentStatus='Complete')
+            return Application.objects.filter(paymentStatus='Complete')
 
         elif group_name == 'bankBranch':
             banch_name = user.branch.branchName
