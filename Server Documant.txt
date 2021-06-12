@@ -1,0 +1,60 @@
+POST: http://127.0.0.1:8000/accounts/singup/ -> crate new user
+	send: email(str), username(str), password(str), password2(str), userType(bankAuthor/branchAuthor)
+
+
+GET:  http://127.0.0.1:8000/userinfo/ -> get logged in user info,
+
+	send: Autorization token
+	get: logged in user info
+
+GET: http://127.0.0.1:8000/banklist/ -> get All the bank List
+	send: Autorization token
+	get: List of all bank
+
+GET: http://127.0.0.1:8000/bankwithbranch/<bankName>/ -> get bank with all the branch
+	url: bankName
+	send: Autorization token
+	get: bank with all the branch
+
+POST: http://127.0.0.1:8000/createbank/ -> Create a new bank
+	
+	send: Autorization_token, bankAuthor(PK), bankName(str)
+	get: new bank
+
+GET: http://127.0.0.1:8000/branchlist/<BankName>/  -> get all the branch name based on a bank 
+	url: bankName
+	send: Autorization token
+	get: List of branch for a bank
+
+POST: http://127.0.0.1:8000/createbranch/ -> create a new branch
+	send: Autorization_token, bank_id(PK), branchAuthor(PK), branchName(str)
+	get: new branch
+
+GET: http://127.0.0.1:8000/applicationlist/  -> get all the list based on user
+	send: Autorization_token,
+	get: application list
+
+GET: http://127.0.0.1:8000/applicationforbranch/<branchName>/ -> get all the appliction based on branch name
+	url: branchName
+	send: Autorization_token,
+	get: application list
+
+GET: http://127.0.0.1:8000/applicationforbank/<bankName>/ -> get all the appliction based on bank name
+	url: bankName
+	send: Autorization_token,
+	get: application list
+
+GET: http://127.0.0.1:8000/application/<id>/ -> get detail of an application
+	url: id
+	send: Autorization_token,
+	get:  application detail 
+
+POST: http://127.0.0.1:8000/postapplication/ -> create a new application
+	send: preferredBank(str), preferredBranch(str),profession(str), incomeRange(number), expectedLoanAmount(number), 
+		collateralSecurityAmount(number), userName(str), fathersName(str), mothersName(str), presentAddress(str), 
+		permanentAddress(str), NID(number), dateOfBirth(str), nationality(str), mobileNumber(number), email(str), 
+		photo(file), signature(file), nidImg(file), document1(file), document2(file), document3(file)
+
+GET: http://127.0.0.1:8000/searchapplication/<loanId> -> search loan id
+	send: loanId
+	get:  application detail  
