@@ -22,3 +22,4 @@ sslcommerz-python==0.0.7
 typed-ast==1.4.0
 urllib3==1.25.7
 wrapt==1.11.2
+xhtml2pdf==0.2.5

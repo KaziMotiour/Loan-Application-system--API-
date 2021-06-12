@@ -9,6 +9,15 @@ from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, C
 from .serializers import UserSerialiser, BankSerializer, BranchSerializer, ApplicationSerializer, PostApplicationSerializer, BankSerializerWithBranch, BankCreateSerializer, BranchCreateSerializer, UserInfoSerialiser
 from .models import Bank, BankBranch, Application
 from accounts.models import NewUsers
+from rest_framework import status
+from io import BytesIO
+from django.core.files import File
+import os
+from django.conf import settings
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from django.contrib.staticfiles import finders
 
 User = get_user_model()
 
@@ -114,7 +123,7 @@ class ApplicationSerializerForBankView(ListAPIView):
         return Application.objects.filter(preferredBank__bankName=preferredBank)
 
 # retrive singe of application 
-class RetriveApplicationForBankView(RetrieveAPIView):
+class RetriveApplicationForBankView(RetrieveUpdateDestroyAPIView):
     permission_classes =[IsAuthenticated, ]
     serializer_class = ApplicationSerializer
     def get_queryset(self):
@@ -133,10 +142,51 @@ class PostApplicationSerializerView(CreateAPIView):
 
 class SearchApplicationForUserView(ListAPIView):
     serializer_class = ApplicationSerializer
+    lookup_field="loanId"
     def get_queryset(self):
         loanId = self.kwargs.get('loanId')
+        NID = self.kwargs.get('NID')
         # print(loanId)
-        return Application.objects.filter(loanId='6sfnh54ai')
+        return Application.objects.filter(loanId=loanId, NID=NID)
+
+
+
+# @api_view(['GET'])
+def render_pdf_view(request, id):
+    obj = Application.objects.filter(id=id).first()
+    print(obj)
+    template_path = 'applicationPDF.html'
+    context = {'myvar': obj}
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    # response['Content-Disposition'] = 'attachment; filename="application.pdf"'
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(
+       html, dest=response)
+    # if error then show some funy view
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return  response
+
+
+
+# @api_view(['GET', 'POST'])
+# def SearchApplicationForUserView(request):
+#     serializer_data = ApplicationSerializer(data=request.data)
+#     if serializer_data.is_valid():
+        
+#         return Response({'comment':'created'}, status=status.HTTP_201_CREATED)
+
+#     getLoanId = serializer_data['getLoanId'] 
+#     getNID =serializer_data['getNID']
+#     print(getLoanId.value, getNID.value)
+#     queryset = Application.objects.filter(loanId=getLoanId.value, NID =getNID.value)
+#     print(queryset)
+#     return Response(queryset)
 
 # @api_view(['GET', 'POST'])
 # def postApplicationSerializerView(request):

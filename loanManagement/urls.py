@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import HelloView, BankSerializerView, BranchSerializerView, ApplicationSerializerView,PostApplicationSerializerView, ApplicationSerializerForBranchView, ApplicationSerializerForBankView, BankSerializerWithBranchView, BankCreateSerializerView, BranchCreateSerializerView, UserInfoView, RetriveApplicationForBankView, SearchApplicationForUserView
+from .views import HelloView, BankSerializerView, BranchSerializerView, ApplicationSerializerView,PostApplicationSerializerView, ApplicationSerializerForBranchView, ApplicationSerializerForBankView, BankSerializerWithBranchView, BankCreateSerializerView, BranchCreateSerializerView, UserInfoView, RetriveApplicationForBankView, SearchApplicationForUserView, render_pdf_view
 from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
@@ -15,5 +15,6 @@ urlpatterns = [
     path('applicationforbank/<str:preferredbank>/', ApplicationSerializerForBankView.as_view(), name='applicationForBank'),
     path('applicationforbranch/<str:preferredbranch>/', ApplicationSerializerForBranchView.as_view(), name='applicationForBank'),
     path('application/<int:pk>/', RetriveApplicationForBankView.as_view(), name='retriveApplication'),
-    path('searchapplication/<str:loanId>/', SearchApplicationForUserView.as_view(), name='retriveApplication'),
+    path('searchapplication/<str:loanId>/<str:NID>/', SearchApplicationForUserView.as_view(), name='retriveApplication'),
+    path('makepdf/<int:id>/', render_pdf_view, name='retriveApplication'),
 ]

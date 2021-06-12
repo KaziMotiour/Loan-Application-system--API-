@@ -79,10 +79,12 @@ class BankSerializerWithBranch(serializers.ModelSerializer):
 class ApplicationSerializer(serializers.ModelSerializer):
     preferredBank =BankSerializer(read_only=True)
     preferredBranch = BranchSerializer(read_only=True)
+    getLoanId = serializers.CharField(max_length=100, required=False)
+    getNID = serializers.CharField(max_length=100, required=False)
     class Meta:
         model = Application
         fields = ['id', 'preferredBank', 'preferredBranch', 'profession', 'incomeRange', 'expectedLoanAmount', 'collateralSecurityAmount', 'userName', 'fathersName', 'mothersName', 'presentAddress', 'permanentAddress', 'NID', 
-         'dateOfBirth', 'nationality', 'mobileNumber', 'email', 'photo', 'signature', 'nidImg', 'document1', 'document2', 'document3', 'applicationStatus', 'loanId', 'transactionID', 'paymentStatus', 'timestamp',]
+         'dateOfBirth', 'nationality', 'mobileNumber', 'email', 'photo', 'signature', 'nidImg', 'document1', 'document2', 'document3', 'applicationStatus', 'loanId', 'transactionID', 'paymentStatus', 'timestamp','getLoanId', 'getNID']
 
 # create application serializer
 class PostApplicationSerializer(serializers.ModelSerializer):
