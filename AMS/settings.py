@@ -41,11 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'rest_framework',
     'loanManagement',
     'make_payment',
     'accounts',
-    'corsheaders',
+    
 ]
 
 MIDDLEWARE = [
@@ -141,11 +142,19 @@ MEDIA_URL ='/media/'
 
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000" ,
-    "http://localhost:3001" ,
-    "http://localhost:3002" ,
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "http://localhost:3002",
     "http://192.168.1.103:3000",
 ]
+# CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ALLOW_CREDENTIALS = True
+# CORS_ORIGIN_WHITELIST = [
+#     'http://localhost:3000',
+# ] # If this is used, then not need to use `CORS_ORIGIN_ALLOW_ALL = True`
+# CORS_ORIGIN_REGEX_WHITELIST = [
+#     'http://localhost:3000',
+# ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

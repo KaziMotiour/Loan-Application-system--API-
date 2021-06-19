@@ -25,7 +25,7 @@ def upload_documents3(instance, filename):
 
 # Create your models here.
 class Bank(models.Model):
-    bankAuthor = models.OneToOneField(User, related_name='bank', on_delete=models.CASCADE)
+    bankAuthor = models.OneToOneField(User, related_name='bank_name', on_delete=models.CASCADE)
     bankName = models.CharField(max_length=200)
     createDate = models.DateTimeField(auto_now_add=True)
     def __str__(self):
@@ -54,31 +54,36 @@ class Application(models.Model):
     ('Complete', 'Complete'),
     ('InComplete', 'InComplete'),
 ]
+    acceptance_status = [
+    ('Pending', 'Pending'),
+    ('Accepted', 'Accepted'),
+    ('Rejected', 'Rejected'),
+]
 
     # Loan info
-    preferredBank = models.ForeignKey(Bank, related_name='bnApplication', on_delete=models.CASCADE)
-    preferredBranch = models.ForeignKey(BankBranch, related_name='brApplication', on_delete=models.CASCADE)
-    profession = models.CharField(max_length=200)
-    incomeRange = models.CharField(max_length=50)
-    expectedLoanAmount = models.CharField(max_length=50)
-    collateralSecurityAmount = models.CharField(max_length=50)
+    preferredBank = models.ForeignKey(Bank, related_name='bnApplication', on_delete=models.CASCADE  )
+    preferredBranch = models.ForeignKey(BankBranch, related_name='brApplication', on_delete=models.CASCADE )
+    profession = models.CharField(max_length=200 )
+    incomeRange = models.CharField(max_length=50 )
+    expectedLoanAmount = models.CharField(max_length=50 )
+    collateralSecurityAmount = models.CharField(max_length=50 )
 
     # Personal info
-    userName = models.CharField(max_length=200)
-    fathersName = models.CharField(max_length=100)
-    mothersName = models.CharField(max_length=100)
-    presentAddress = models.CharField(max_length=100)
-    permanentAddress = models.CharField(max_length=100)
-    NID = models.CharField(max_length=50)
-    dateOfBirth = models.CharField(max_length=50)
-    nationality = models.CharField(max_length=50)
-    mobileNumber = models.CharField(max_length=50)
-    email = models.CharField(max_length=50)
+    userName = models.CharField(max_length=200 )
+    fathersName = models.CharField(max_length=100 )
+    mothersName = models.CharField(max_length=100 )
+    presentAddress = models.CharField(max_length=100 )
+    permanentAddress = models.CharField(max_length=100 )
+    NID = models.CharField(max_length=50 )
+    dateOfBirth = models.CharField(max_length=50 )
+    nationality = models.CharField(max_length=50 )
+    mobileNumber = models.CharField(max_length=50 )
+    email = models.CharField(max_length=50 )
 
     # Documents
-    photo = models.FileField(_("Image field"), upload_to=upload_image)
-    signature = models.FileField(_("signature field"), upload_to=upload_signature)
-    nidImg = models.FileField(_("NID field"), upload_to=upload_NID, default='')
+    photo = models.FileField(_("Image field"), upload_to=upload_image )
+    signature = models.FileField(_("signature field"), upload_to=upload_signature )
+    nidImg = models.FileField(_("NID field"), upload_to=upload_NID, default='' )
     document1 = models.FileField(_("documents1 field"), upload_to=upload_documents1, null=True, blank=True)
     document2 = models.FileField(_("documents2 field"), upload_to=upload_documents2, null=True, blank=True)
     document3 = models.FileField(_("documents3 field"), upload_to=upload_documents3, null=True, blank=True)
@@ -95,6 +100,12 @@ class Application(models.Model):
         max_length=20,
         choices=payment_status,
         default='InComplete',
+    )
+    
+    accepteance = models.CharField(
+        max_length=20,
+        choices=acceptance_status,
+        default='Pending',
     )
 
     timestamp = models.DateTimeField(auto_now_add=True)

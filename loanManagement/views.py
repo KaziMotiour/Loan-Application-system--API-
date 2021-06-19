@@ -5,8 +5,8 @@ from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView, RetrieveAPIView
-from .serializers import UserSerialiser, BankSerializer, BranchSerializer, ApplicationSerializer, PostApplicationSerializer, BankSerializerWithBranch, BankCreateSerializer, BranchCreateSerializer, UserInfoSerialiser
+from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView, RetrieveAPIView, UpdateAPIView
+from .serializers import UserSerialiser, BankSerializer, BranchSerializer, ApplicationSerializer, PostApplicationSerializer, BankSerializerWithBranch, BankCreateSerializer, BranchCreateSerializer, UserInfoSerialiser, ApplicationSerializerForUpdate
 from .models import Bank, BankBranch, Application
 from accounts.models import NewUsers
 from rest_framework import status
@@ -32,7 +32,7 @@ class HelloView(APIView):
 
 class UserInfoView(ListAPIView):
     serializer_class = UserInfoSerialiser
-    permission_classes = [IsAuthenticated,]
+    # permission_classes = [IsAuthenticated,]
     # queryset = User.objects.all()
     def get_queryset(self):
         pk = self.request.user.id
@@ -69,9 +69,9 @@ class BranchSerializerView(ListAPIView):
     serializer_class = BranchSerializer
     permission_classes = [IsAuthenticated,]
     def get_queryset(self):
-        bankName = self.kwargs.get('bankname')
-        print(bankName)
-        return BankBranch.objects.filter(bank__bankName=bankName)
+        id = self.kwargs.get('id')
+        # print(bankName)
+        return BankBranch.objects.filter(bank=id)
     
 
 
@@ -131,7 +131,14 @@ class RetriveApplicationForBankView(RetrieveUpdateDestroyAPIView):
         print(pk)
         return Application.objects.filter(id=pk)
     
-
+class UpdateApplicationForBankView(UpdateAPIView):
+    permission_classes =[IsAuthenticated, ]
+    serializer_class = ApplicationSerializerForUpdate
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        print(pk)
+        return Application.objects.filter(id=pk)
+    
     
     
 

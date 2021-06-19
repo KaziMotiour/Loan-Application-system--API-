@@ -11,9 +11,10 @@ from accounts.models import NewUsers
 
 class UserInfoSerialiser(serializers.ModelSerializer):
     userInfo = serializers.SerializerMethodField(read_only=True,)
+    bankName = serializers.SerializerMethodField(read_only=True,)
     class Meta:
         model = User
-        fields = ['id', 'email', 'username', 'userInfo']
+        fields = ['id', 'email', 'username', 'userInfo', 'bankName', 'branch']
     
     def get_userInfo(self, obj):
         request = self.context.get("request")
@@ -25,6 +26,19 @@ class UserInfoSerialiser(serializers.ModelSerializer):
             x =  request.user.groups.all()
             print(x)
             return request.user.groups.all()[0].name
+    def get_bankName(self, obj):
+        # if obj.groups.all()[0].name =='BankBranch':
+        #     print('branch user')
+        # bankName = BankBranch.objects.filter(bankAuthor=8)
+        # print(bankName,'name')
+        if obj.is_superuser:
+            return 'null'
+        if obj.groups.all()[0].name =='BankBranch':
+            print(obj.branch.bank.bankName, 'bankname')
+            return obj.branch.bank.bankName
+        if obj.groups.all()[0].name =='Bank':
+            return obj.bank_name.bankName
+        return 'null'
 
 
 class UserSerialiser(serializers.ModelSerializer):
@@ -85,6 +99,11 @@ class ApplicationSerializer(serializers.ModelSerializer):
         model = Application
         fields = ['id', 'preferredBank', 'preferredBranch', 'profession', 'incomeRange', 'expectedLoanAmount', 'collateralSecurityAmount', 'userName', 'fathersName', 'mothersName', 'presentAddress', 'permanentAddress', 'NID', 
          'dateOfBirth', 'nationality', 'mobileNumber', 'email', 'photo', 'signature', 'nidImg', 'document1', 'document2', 'document3', 'applicationStatus', 'loanId', 'transactionID', 'paymentStatus', 'timestamp','getLoanId', 'getNID']
+
+class ApplicationSerializerForUpdate(serializers.ModelSerializer):
+    class Meta:
+        model = Application
+        fields = ['id','accepteance']
 
 # create application serializer
 class PostApplicationSerializer(serializers.ModelSerializer):

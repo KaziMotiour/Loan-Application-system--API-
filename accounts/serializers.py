@@ -30,12 +30,14 @@ class singupSerializer(serializers.ModelSerializer):
         email = data['email']
         password1 = data['password']
         password2  = data['password2']
-
+        print(password1)
         if len(password1)<=5:
-            raise serializers.ValidationError({'password1':'Password must be more then 5 character'})
+            raise serializers.ValidationError({'message':'Password must be more then 5 character'})
+        if password1=='':
+            raise serializers.ValidationError({'message':'Password field should not be null'})
 
         if password1 != password2:
-            raise serializers.ValidationError({'password2':"password doesn't matched"})
+            raise serializers.ValidationError({'message':"password doesn't matched"})
         return data
 
     def create(self, validated_data):
