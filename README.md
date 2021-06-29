@@ -14,11 +14,18 @@ This application allow any anonyms user  to send application for loan to any ban
 
 
 
+
+
 ## To install all the packages which are required, Type on CMD:
 * pip i -r requirements.txt
 
 ## To run this project, Type on CMD:
 * python manage.py runserver
+
+### Integrating Payment Gateway - PayTM.
+* Create a Merchant account on PayTM to integrate.
+* Don't share your MID.
+* And also don't share MERCHANT_KEY = ''
 
 
 
